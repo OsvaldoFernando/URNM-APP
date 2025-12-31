@@ -1,0 +1,18 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Sobre - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Sobre a {{ config.nome_universidade }}</h1>
+    <div class="card">
+        <div class="card-body">
+            {% if config.sobre_universidade %}
+                {{ config.sobre_universidade|safe }}
+            {% else %}
+                <p>A {{ config.nome_universidade }} é uma instituição de ensino superior dedicada à formação de profissionais qualificados em diversas áreas do conhecimento.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

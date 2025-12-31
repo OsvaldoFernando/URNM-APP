@@ -1,0 +1,20 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ noticia.titulo }} - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <article>
+        <h1 class="mb-3">{{ noticia.titulo }}</h1>
+        <p class="text-muted">Publicado em {{ noticia.data_publicacao|date:"d/m/Y" }} | {{ noticia.visualizacoes }} visualizações</p>
+        
+        {% if noticia.imagem_destaque %}
+        <img src="{{ noticia.imagem_destaque.url }}" class="img-fluid mb-4" alt="{{ noticia.titulo }}">
+        {% endif %}
+        
+        <div class="lead">{{ noticia.resumo }}</div>
+        <hr>
+        <div>{{ noticia.conteudo|safe }}</div>
+    </article>
+</div>
+{% endblock %}

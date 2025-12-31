@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Organigrama - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Organigrama Institucional</h1>
+    
+    {% if reitor %}
+    <div class="text-center mb-5">
+        <div class="card d-inline-block" style="width: 300px;">
+            <div class="card-body bg-primary text-white">
+                {% if reitor.foto %}
+                <img src="{{ reitor.foto.url }}" class="rounded-circle mb-2" width="80" height="80" style="object-fit: cover;">
+                {% endif %}
+                <h5>{{ reitor.nome_completo }}</h5>
+                <p class="mb-0">{{ reitor.cargo }}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if vice_reitores %}
+    <h3 class="text-center mb-3">Vice-Reitores</h3>
+    <div class="row justify-content-center mb-5">
+        {% for vice in vice_reitores %}
+        <div class="col-md-4 mb-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    {% if vice.foto %}
+                    <img src="{{ vice.foto.url }}" class="rounded-circle mb-2" width="60" height="60" style="object-fit: cover;">
+                    {% endif %}
+                    <h6>{{ vice.nome_completo }}</h6>
+                    <p class="small text-muted mb-0">{{ vice.cargo }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    {% if diretores %}
+    <h3 class="text-center mb-3">Diretores de Faculdades</h3>
+    <div class="row mb-5">
+        {% for diretor in diretores %}
+        <div class="col-md-3 mb-3">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    {% if diretor.foto %}
+                    <img src="{{ diretor.foto.url }}" class="rounded-circle mb-2" width="50" height="50" style="object-fit: cover;">
+                    {% endif %}
+                    <h6 class="small">{{ diretor.nome_completo }}</h6>
+                    <p class="small text-muted mb-1">{{ diretor.cargo }}</p>
+                    {% if diretor.faculdade %}
+                    <p class="small"><strong>{{ diretor.faculdade.sigla }}</strong></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

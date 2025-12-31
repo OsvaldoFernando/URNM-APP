@@ -1,0 +1,30 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Faculdades - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4 text-center">Nossas Faculdades</h1>
+    <div class="row">
+        {% for faculdade in faculdades %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                {% if faculdade.imagem_capa %}
+                <img src="{{ faculdade.imagem_capa.url }}" class="card-img-top" alt="{{ faculdade.nome }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ faculdade.sigla }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ faculdade.nome }}</h6>
+                    <p class="card-text">{{ faculdade.descricao|striptags|truncatewords:20 }}</p>
+                    <a href="{% url 'core:faculdade_detail' faculdade.id %}" class="btn btn-primary">Ver Detalhes</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p>Nenhuma faculdade cadastrada.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

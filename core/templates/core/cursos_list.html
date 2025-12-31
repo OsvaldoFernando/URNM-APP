@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Cursos - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Cursos Disponíveis</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Faculdade</label>
+                    <select name="faculdade" class="form-select">
+                        <option value="">Todas as Faculdades</option>
+                        {% for fac in faculdades %}
+                        <option value="{{ fac.id }}" {% if faculdade_selecionada == fac.id|stringformat:"s" %}selected{% endif %}>
+                            {{ fac.sigla }} - {{ fac.nome }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Nível</label>
+                    <select name="nivel" class="form-select">
+                        <option value="">Todos os Níveis</option>
+                        <option value="licenciatura" {% if nivel_selecionado == 'licenciatura' %}selected{% endif %}>Licenciatura</option>
+                        <option value="mestrado" {% if nivel_selecionado == 'mestrado' %}selected{% endif %}>Mestrado</option>
+                        <option value="doutorado" {% if nivel_selecionado == 'doutorado' %}selected{% endif %}>Doutorado</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="row">
+        {% for curso in cursos %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ curso.nome }}</h5>
+                    <p class="text-muted">{{ curso.faculdade.sigla }}</p>
+                    <p><span class="badge bg-primary">{{ curso.get_nivel_display }}</span></p>
+                    <p>Duração: {{ curso.duracao_anos }} anos</p>
+                    <p>Vagas: {{ curso.vagas }}</p>
+                    <a href="{% url 'core:curso_detail' curso.id %}" class="btn btn-primary">Ver Grelha Curricular</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhum curso encontrado.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

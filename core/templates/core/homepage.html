@@ -1,0 +1,137 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+{% if banners %}
+<div id="carouselBanners" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+        {% for banner in banners %}
+        <button type="button" data-bs-target="#carouselBanners" data-bs-slide-to="{{ forloop.counter0 }}" 
+                {% if forloop.first %}class="active"{% endif %}></button>
+        {% endfor %}
+    </div>
+    <div class="carousel-inner">
+        {% for banner in banners %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <img src="{{ banner.imagem.url }}" class="d-block w-100" alt="{{ banner.titulo }}" style="max-height: 500px; object-fit: cover;">
+            <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded p-3">
+                <h5>{{ banner.titulo }}</h5>
+                <p>{{ banner.descricao }}</p>
+                {% if banner.link %}
+                <a href="{{ banner.link }}" class="btn btn-primary btn-sm">Saiba Mais</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselBanners" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselBanners" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+{% endif %}
+
+<div class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Bem-vindo à {{ config.nome_universidade }}</h1>
+        <p class="lead">Excelência em Ensino Superior em Moçambique</p>
+    </div>
+</div>
+
+{% if noticias_destaque %}
+<div class="container my-5">
+    <h2 class="text-center mb-4 fw-bold">Notícias em Destaque</h2>
+    
+    <div id="carouselNoticias" class="carousel slide shadow-lg rounded" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+            {% for noticia in noticias_destaque %}
+            <button type="button" data-bs-target="#carouselNoticias" data-bs-slide-to="{{ forloop.counter0 }}" 
+                    {% if forloop.first %}class="active"{% endif %}></button>
+            {% endfor %}
+        </div>
+        
+        <div class="carousel-inner rounded">
+            {% for noticia in noticias_destaque %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                {% if noticia.imagem_destaque %}
+                <img src="{{ noticia.imagem_destaque.url }}" class="d-block w-100" alt="{{ noticia.titulo }}" 
+                     style="height: 450px; object-fit: cover;">
+                {% else %}
+                <div class="d-block w-100 bg-gradient" style="height: 450px; background: linear-gradient(135deg, var(--cor-primaria) 0%, var(--cor-secundaria) 100%);"></div>
+                {% endif %}
+                
+                <div class="carousel-caption d-block bg-dark bg-opacity-75 rounded-3 p-4 mx-auto" style="max-width: 800px; bottom: 40px;">
+                    <span class="badge bg-warning text-dark mb-2">DESTAQUE</span>
+                    <h3 class="fw-bold">{{ noticia.titulo }}</h3>
+                    <p class="mb-3">{{ noticia.resumo|truncatewords:25 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-white-50">{{ noticia.data_publicacao|date:"d/m/Y" }}</small>
+                        <a href="{% url 'core:noticia_detail' noticia.slug %}" class="btn btn-light btn-sm">
+                            <i class="bi bi-arrow-right-circle"></i> Ler Notícia Completa
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Próximo</span>
+        </button>
+    </div>
+</div>
+{% endif %}
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Nossas Faculdades</h2>
+    <div class="row">
+        {% for faculdade in faculdades %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 text-center">
+                {% if faculdade.imagem_capa %}
+                <img src="{{ faculdade.imagem_capa.url }}" class="card-img-top" alt="{{ faculdade.nome }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ faculdade.sigla }}</h5>
+                    <p class="card-text">{{ faculdade.nome }}</p>
+                    <a href="{% url 'core:faculdade_detail' faculdade.id %}" class="btn btn-primary btn-sm">Ver Mais</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center">
+            <p class="text-muted">Nenhuma faculdade cadastrada ainda.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% if noticias_recentes %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Últimas Notícias</h2>
+    <div class="row">
+        {% for noticia in noticias_recentes %}
+        <div class="col-md-6 col-lg-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">{{ noticia.titulo }}</h6>
+                    <p class="card-text small">{{ noticia.resumo|truncatewords:15 }}</p>
+                    <p class="text-muted small">{{ noticia.data_publicacao|date:"d/m/Y" }}</p>
+                    <a href="{% url 'core:noticia_detail' noticia.slug %}" class="btn btn-sm btn-outline-primary">Ler</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-3">
+        <a href="{% url 'core:noticias_list' %}" class="btn btn-primary">Ver Todas as Notícias</a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ faculdade.nome }} - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="hero-section">
+    <div class="container text-center">
+        <h1>{{ faculdade.sigla }} - {{ faculdade.nome }}</h1>
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3>Sobre a Faculdade</h3>
+                    {{ faculdade.descricao|safe }}
+                </div>
+            </div>
+            
+            <h3 class="mb-3">Cursos Oferecidos</h3>
+            <div class="row">
+                {% for curso in cursos %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ curso.nome }}</h5>
+                            <p class="badge bg-primary">{{ curso.get_nivel_display }}</p>
+                            <p class="card-text">Duração: {{ curso.duracao_anos }} anos</p>
+                            <a href="{% url 'core:curso_detail' curso.id %}" class="btn btn-sm btn-outline-primary">Ver Detalhes</a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Nenhum curso cadastrado para esta faculdade.</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Contato</h5>
+                    {% if faculdade.email %}<p><i class="bi bi-envelope"></i> {{ faculdade.email }}</p>{% endif %}
+                    {% if faculdade.telefone %}<p><i class="bi bi-telephone"></i> {{ faculdade.telefone }}</p>{% endif %}
+                    {% if faculdade.endereco %}<p><i class="bi bi-geo-alt"></i> {{ faculdade.endereco }}</p>{% endif %}
+                </div>
+            </div>
+            
+            {% if funcionarios %}
+            <div class="card">
+                <div class="card-body">
+                    <h5>Equipa</h5>
+                    {% for funcionario in funcionarios|slice:":5" %}
+                    <p class="mb-2">
+                        <strong>{{ funcionario.nome_completo }}</strong><br>
+                        <small class="text-muted">{{ funcionario.cargo }}</small>
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

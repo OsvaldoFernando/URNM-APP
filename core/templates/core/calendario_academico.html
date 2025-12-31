@@ -1,0 +1,46 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Calendário Acadêmico - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Calendário Acadêmico {{ ano_selecionado }}</h1>
+    
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="get" class="row align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label">Ano Letivo</label>
+                    <select name="ano" class="form-select">
+                        {% for ano in anos_disponiveis %}
+                        <option value="{{ ano }}" {% if ano == ano_selecionado %}selected{% endif %}>{{ ano }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    {% for evento in eventos %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">
+                {{ evento.titulo }}
+                <span class="badge bg-secondary">{{ evento.get_tipo_display }}</span>
+            </h5>
+            <p class="card-text">{{ evento.descricao|safe }}</p>
+            <p class="text-muted">
+                <i class="bi bi-calendar"></i>
+                {{ evento.data_inicio|date:"d/m/Y" }}
+                {% if evento.data_fim %} até {{ evento.data_fim|date:"d/m/Y" }}{% endif %}
+            </p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center">Nenhum evento cadastrado para este ano.</p>
+    {% endfor %}
+</div>
+{% endblock %}

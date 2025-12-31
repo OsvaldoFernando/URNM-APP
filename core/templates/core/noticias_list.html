@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Notícias - {{ config.nome_universidade }}{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Notícias</h1>
+    <div class="row">
+        {% for noticia in noticias %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+                {% if noticia.imagem_destaque %}
+                <img src="{{ noticia.imagem_destaque.url }}" class="card-img-top" alt="{{ noticia.titulo }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body">
+                    {% if noticia.destaque %}<span class="badge bg-warning text-dark">Destaque</span>{% endif %}
+                    <h5 class="card-title">{{ noticia.titulo }}</h5>
+                    <p class="card-text">{{ noticia.resumo|truncatewords:20 }}</p>
+                    <p class="text-muted small">{{ noticia.data_publicacao|date:"d/m/Y" }}</p>
+                    <a href="{% url 'core:noticia_detail' noticia.slug %}" class="btn btn-primary btn-sm">Ler Mais</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhuma notícia publicada.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
