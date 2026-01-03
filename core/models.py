@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 
 class Configuracao(models.Model):
     """Configurações gerais do site da universidade"""
-    nome_universidade = models.CharField(max_length=200, default='URNM - Universidade')
+    nome_universidade = models.CharField(max_length=200, default='BIOCON')
     logotipo = models.ImageField(upload_to='configuracao/', null=True, blank=True)
     cor_primaria = models.CharField(max_length=7, default='#003366', help_text='Cor primária em hexadecimal (Navy Blue)')
     cor_secundaria = models.CharField(max_length=7, default='#C69214', help_text='Cor secundária em hexadecimal (Gold)')

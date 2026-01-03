@@ -1,7 +1,7 @@
-# URNM University Website
+# BIOCON Website
 
 ## Overview
-This is a Django-based university website for URNM (Universidade Rovuma Nampula - Moçambique). The website showcases faculties, courses, news, academic calendar, and organizational structure.
+This is a Django-based website for BIOCON. The website showcases faculties, courses, news, academic calendar, and organizational structure.
 
 ## Project Structure
 - `urnm_university/` - Django project settings
